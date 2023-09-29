@@ -44,6 +44,21 @@ def add_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     fetch_data(); 
 
+def remove_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    trigger_to_remove = update.message.text.lstrip('/remove ')
+    
+    with open(DATA_PATH, 'r') as json_file:
+        existing_data = json.load(json_file)
+
+    updated_data = [item for item in existing_data if item.get('trigger', '').lower() != trigger_to_remove.lower()]
+
+    with open(DATA_PATH, 'w') as json_file:
+        json.dump(updated_data, json_file, indent=3)
+
+    fetch_data()
+    # await update.message.reply_text(f'Response for trigger "{trigger_to_remove}" removed successfully.')
+
+
 # Responses
 def handle_response(text: str) -> str:
     processed: str = text.lower()
@@ -82,6 +97,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('start', start_command))
 
     app.add_handler(CommandHandler('add', add_response))
+    app.add_handler(CommandHandler('remove', remove_response))
 
     # Messages
     app.add_handler(MessageHandler(filters.TEXT,handle_message))

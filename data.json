@@ -1,18 +1,54 @@
 [
    {
-      "trigger": "macak",
-      "message": "mahim"
+      "trigger": "matriks",
+      "message": "DUVAJ GA MAHIME!"
    },
    {
-      "trigger": "kita",
-      "message": "cveca"
+      "trigger": "matrix",
+      "message": "DUVAJ GA MAHIME!"
    },
    {
-      "trigger": "kita",
-      "message": "kitica"
+      "trigger": "nile",
+      "message": "duvaj ga"
+   },
+   {
+      "trigger": "mahim",
+      "message": "prepaljen"
+   },
+   {
+      "trigger": "mahim",
+      "message": "ma\u0107ak"
+   },
+   {
+      "trigger": "visnjic",
+      "message": "mrs u kombe"
    },
    {
       "trigger": "ljanmi",
-      "message": "rakun"
+      "message": "EJ RAKUNCINO"
+   },
+   {
+      "trigger": "cuki",
+      "message": "klasicna pedercina"
+   },
+   {
+      "trigger": "#mahimizacija",
+      "message": "\ud83d\udca7\ud83d\udca7\ud83d\udca7"
+   },
+   {
+      "trigger": "iskreno jel jebe?",
+      "message": "normalno."
+   },
+   {
+      "trigger": "box",
+      "message": "najjace"
+   },
+   {
+      "trigger": "ili",
+      "message": "ili"
+   },
+   {
+      "trigger": "u buhri",
+      "message": "pakla\u010dicaaa"
    }
 ]
