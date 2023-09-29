@@ -1,0 +1,1 @@
+print('UZMI GA ZDVIJE')
