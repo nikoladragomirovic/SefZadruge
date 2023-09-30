@@ -13,20 +13,12 @@ def fetch_data():
         with open(DATA_PATH, 'r') as json_file:
             data = json.load(json_file)
         DATA = data
-        return None
     except FileNotFoundError:
         print(f"File not found: {DATA_PATH}")
-        return None
     except json.JSONDecodeError:
         print(f"Invalid JSON in file: {DATA_PATH}")
-        return None
-
-# Commands
-async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('UZMI GA ZDVIJE')
 
 def add_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
     trigger, message = update.message.text.lstrip('/add ').split(';')
 
     new_response = {
@@ -42,7 +34,7 @@ def add_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     with open(DATA_PATH, 'w') as json_file:
         json.dump(existing_data, json_file, indent=3)
 
-    fetch_data(); 
+    fetch_data()
 
 def remove_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     trigger_to_remove = update.message.text.lstrip('/remove ')
@@ -56,17 +48,14 @@ def remove_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
         json.dump(updated_data, json_file, indent=3)
 
     fetch_data()
-    # await update.message.reply_text(f'Response for trigger "{trigger_to_remove}" removed successfully.')
-
 
 # Responses
 def handle_response(text: str) -> str:
     processed: str = text.lower()
 
-    data = DATA
     response_list = []
 
-    for item in data:
+    for item in DATA:
         for key, value in item.items():
             if key == 'trigger' and value in processed:
                     response_list.append(item['message'])
@@ -94,8 +83,6 @@ if __name__ == '__main__':
     fetch_data();
 
     # Commands
-    app.add_handler(CommandHandler('start', start_command))
-
     app.add_handler(CommandHandler('add', add_response))
     app.add_handler(CommandHandler('remove', remove_response))
 
