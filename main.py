@@ -22,8 +22,9 @@ def add_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     trigger, message = update.message.text.lstrip('/add ').split(';')
 
     new_response = {
+        'type': 'text',
         'trigger': trigger.lower(),
-        'message': message
+        'response': message
     }
 
     with open(DATA_PATH, 'r') as json_file:
@@ -49,6 +50,39 @@ def remove_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     fetch_data()
 
+async def add_multimedia_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.caption[:5] == '/add ':
+
+        trigger = update.message.caption[5:]
+
+        if update.message.photo:
+            file = await context.bot.get_file(update.message.photo[-1].file_id)
+            await file.download_to_drive(f'./media/{file.file_unique_id}.jpg')
+            response = f'./media/{file.file_unique_id}.jpg'
+            type = 'image'
+
+        if update.message.video:
+            file = await context.bot.get_file(update.message.video.file_id)
+            await file.download_to_drive(f'./media/{file.file_unique_id}.mp4')
+            response = f'./media/{file.file_unique_id}.mp4'
+            type = 'video'
+
+        new_response = {
+            'type': type,
+            'trigger': trigger.lower(),
+            'response': response
+        }
+
+        with open(DATA_PATH, 'r') as json_file:
+            existing_data = json.load(json_file)
+
+        existing_data.append(new_response)
+
+        with open(DATA_PATH, 'w') as json_file:
+            json.dump(existing_data, json_file, indent=2)
+
+        fetch_data()
+
 # Responses
 def handle_response(text: str) -> str:
     processed: str = text.lower()
@@ -58,7 +92,7 @@ def handle_response(text: str) -> str:
     for item in DATA:
         for key, value in item.items():
             if key == 'trigger' and value in processed:
-                    response_list.append(item['message'])
+                    response_list.append((item['type'], item['response']))
     
     return response_list
     
@@ -71,7 +105,12 @@ async def handle_message(update: Update,context: ContextTypes.DEFAULT_TYPE):
     responses = handle_response(text)
 
     for response in responses:
-        await update.message.reply_text(response)
+        if response[0] == 'text':
+            await update.message.reply_text(response[1])
+        elif response[0] == 'image':
+            await update.message.reply_photo(response[1])
+        elif response[0] == 'video':
+            await update.message.reply_video(response[1])
 
 async def error(update: Update,context: ContextTypes.DEFAULT_TYPE):
     pass
@@ -88,6 +127,8 @@ if __name__ == '__main__':
 
     # Messages
     app.add_handler(MessageHandler(filters.TEXT,handle_message))
+    app.add_handler(MessageHandler(filters.PHOTO, add_multimedia_response))
+    app.add_handler(MessageHandler(filters.VIDEO, add_multimedia_response))
 
     # Errors
     app.add_error_handler(error)
