@@ -135,4 +135,4 @@ if __name__ == '__main__':
 
     # Polls
     print('Polling...')
-    app.run_polling(poll_interval=3)
+    app.run_polling(poll_interval=0, drop_pending_updates=True)
