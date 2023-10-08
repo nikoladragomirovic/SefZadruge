@@ -42,6 +42,10 @@ def remove_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     with open(DATA_PATH, 'r') as json_file:
         existing_data = json.load(json_file)
+    
+    for item in existing_data:
+        if item['trigger'] == trigger_to_remove and (item['type'] == 'image' or item['type'] == 'video'):
+            os.remove(item['response'])
 
     updated_data = [item for item in existing_data if item.get('trigger', '').lower() != trigger_to_remove.lower()]
 
