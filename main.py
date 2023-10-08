@@ -1,9 +1,9 @@
-import json
+import json, os
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN: Final = '6437235439:AAF39_by7pIwn1-_oXwQnj8qH9hoE90cZec'
+TOKEN: Final = os.environ.get('TOKEN')
 BOT_USERNAME: Final = '@ZadrugaS69_bot'
 DATA_PATH: Final = './data.json'
 
